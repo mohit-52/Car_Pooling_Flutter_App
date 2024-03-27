@@ -1,5 +1,6 @@
 import 'package:car_pooling/auth/authentication_screen.dart';
 import 'package:car_pooling/auth/on_boarding_screen.dart';
+import 'package:car_pooling/auth/otp_screen.dart';
 import 'package:car_pooling/auth/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
       ),
-      home: AuthScreen(),
+      home: SplashScreen(),
     );
   }
 }

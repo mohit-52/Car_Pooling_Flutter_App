@@ -21,56 +21,60 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 100,),
-            Text("Enter OTP", style: TextStyle(fontSize: 20),),
-            SizedBox(height: 50,),
-            TextFormField(
-              controller: _otpController,
-              keyboardType: TextInputType.phone,
-              maxLines: 1,
-              decoration: InputDecoration(
-                  hintText: "OTP", border: OutlineInputBorder()),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-
-            // NEXT BUTTON
-            InkWell(
-              onTap: ()async {
-                setState(() {
-                  isLoading = true;
-                });
-                final credential = PhoneAuthProvider.credential(
-                    verificationId: widget.verifyCode,
-                    smsCode: _otpController.text.toString());
-
-                try{
-                  await _auth.signInWithCredential(credential);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> OnBoardingScreen()));
-                }catch(e){
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Utils().toastMessage(e.toString());
-                }
-              },
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child:  Center(child: isLoading ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :  Text("Continue", style: TextStyle(color: Colors.white),)),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 100,),
+              Text("Enter OTP", style: TextStyle(fontSize: 20),),
+              Image(image: AssetImage("assets/images/otp_image.jpg")),
+              SizedBox(height: 10,),
+              TextFormField(
+                controller: _otpController,
+                keyboardType: TextInputType.phone,
+                maxLines: 1,
+                decoration: InputDecoration(
+                    hintText: "OTP", border: OutlineInputBorder()),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+
+              // NEXT BUTTON
+              InkWell(
+                onTap: ()async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  final credential = PhoneAuthProvider.credential(
+                      verificationId: widget.verifyCode,
+                      smsCode: _otpController.text.toString());
+
+                  try{
+                    await _auth.signInWithCredential(credential);
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> OnBoardingScreen()));
+                  }catch(e){
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Utils().toastMessage(e.toString());
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child:  Center(child: isLoading ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :  Text("Continue", style: TextStyle(color: Colors.white),)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

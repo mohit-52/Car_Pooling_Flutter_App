@@ -42,7 +42,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
@@ -243,6 +243,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
                   child:  Center(child: isLoading ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :  Text("Continue", style: TextStyle(color: Colors.white),)),
                 ),
+              ),
+              SizedBox(
+                height: 15,
               ),
             ],
           ),
