@@ -34,14 +34,14 @@ class _MainHomePageState extends State<MainHomePage> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(FontAwesomeIcons.biking),
-        title: ("Share Ride"),
+        icon: const Icon(FontAwesomeIcons.map),
+        title: ("My Location"),
         activeColorPrimary:Colors.redAccent,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(FontAwesomeIcons.searchengin),
-        title: ("Find Ride"),
+        title: ("Search Ride"),
         activeColorPrimary:Colors.redAccent,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -68,6 +68,7 @@ class _MainHomePageState extends State<MainHomePage> {
   Widget build(BuildContext context) {
     // BOTTOM BAR
     return PersistentTabView(
+
       context,
       controller: _controller,
       screens: _buildScreens(),

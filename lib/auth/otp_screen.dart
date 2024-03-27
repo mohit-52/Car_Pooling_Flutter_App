@@ -1,4 +1,4 @@
-import 'package:car_pooling/view/on_boarding_screen.dart';
+import 'package:car_pooling/auth/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -1,5 +1,6 @@
-import 'dart:ui';
-
+import 'dart:convert';
+import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
@@ -27,29 +28,7 @@ class _MapScreenState extends State<MapScreen> {
         infoWindow: InfoWindow(title: "My"))
   ];
 
-
-  String _pickupLocation = '';
-  String _dropoffLocation = '';
-  DateTime _pickupDate = DateTime.now();
-  DateTime _dropoffDate = DateTime.now();
-
-  Future<void> _selectDate(BuildContext context, bool isPickupDate) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isPickupDate) {
-          _pickupDate = picked;
-        } else {
-          _dropoffDate = picked;
-        }
-      });
-    }
-  }
+  String pickupAdd = 'Click Map Icon to Update Address';
 
   @override
   void initState() {
@@ -59,7 +38,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: Text(
+          'My Location',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child:Stack(
           children: [
@@ -83,67 +69,24 @@ class _MapScreenState extends State<MapScreen> {
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.5), // Adjust opacity as needed
-                      borderRadius: BorderRadius.circular(12.0),
+                      borderRadius: BorderRadius.circular(100),
+
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
                           controller: pickUpTextEditingController,
+                          enabled: false,
                           decoration: InputDecoration(
-                            labelText: 'Pickup Location',
+                            labelText: pickupAdd,
                             border: OutlineInputBorder(),
+                            labelStyle: TextStyle(
+                              color: Colors.black
+                            )
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              _pickupLocation = value;
-                            });
-                          },
                         ),
-                        // SizedBox(height: 16.0),
-                        // TextField(
-                        //   decoration: InputDecoration(
-                        //     labelText: 'Dropoff Location',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       _dropoffLocation = value;
-                        //     });
-                        //   },
-                        // ),
-                        // SizedBox(height: 16.0),
-                        // Row(
-                        //   children: <Widget>[
-                        //     Expanded(
-                        //       child: Text(
-                        //         _pickupDate == null
-                        //             ? 'Pickup Date: '
-                        //             : 'Pickup Date: ${_pickupDate.toString()}',
-                        //       ),
-                        //     ),
-                        //     ElevatedButton(
-                        //       onPressed: () => _selectDate(context, true),
-                        //       child: Text('Select Pickup Date'),
-                        //     ),
-                        //   ],
-                        // ),
-                        // SizedBox(height: 16.0),
-                        // Row(
-                        //   children: <Widget>[
-                        //     Expanded(
-                        //       child: Text(
-                        //         _dropoffDate == null
-                        //             ? 'Dropoff Date: '
-                        //             : 'Dropoff Date: ${_dropoffDate.toString()}',
-                        //       ),
-                        //     ),
-                        //     ElevatedButton(
-                        //       onPressed: () => _selectDate(context, false),
-                        //       child: Text('Select Dropoff Date'),
-                        //     ),
-                        //   ],
-                        // ),
+
                       ],
                     ),
                   ),
@@ -159,9 +102,9 @@ class _MapScreenState extends State<MapScreen> {
         child: Icon(Icons.location_on_outlined),
         onPressed: () {
           getUserCurrentLocation().then((value) async {
-            print("My current location is: ");
-            print(value.latitude.toString() + value.longitude.toString());
-
+            // print("My current location is: ");
+            // print(value.latitude.toString() + value.longitude.toString());
+            loadData();
             _markers.add(Marker(
                 markerId: MarkerId('2'),
                 position: LatLng(value.latitude, value.longitude),
@@ -183,6 +126,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})
@@ -195,9 +139,20 @@ class _MapScreenState extends State<MapScreen> {
 
   loadData() {
     getUserCurrentLocation().then((value) async {
-      print("My current location is: ");
-      print(value.latitude.toString() + value.longitude.toString());
-
+      // print("My current location is: ");
+      // print(value.latitude.toString() + value.longitude.toString());
+      List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
+      setState((){
+        pickupAdd =  placemarks.reversed.last.subLocality.toString() +", "+
+            placemarks.reversed.last.locality.toString() +", "+
+            placemarks.reversed.last.administrativeArea.toString() +", "+
+            placemarks.reversed.last.postalCode.toString() +", "+
+            placemarks.reversed.last.country.toString();
+            // placemarks.reversed.last.street.toString() +", "+
+            // placemarks.reversed.last.isoCountryCode.toString() +", "+
+            // placemarks.reversed.last.subAdministrativeArea.toString() +", "+
+            // placemarks.reversed.last.thoroughfare.toString() +", "+
+      });
       _markers.add(Marker(
           markerId: MarkerId('2'),
           position: LatLng(value.latitude, value.longitude),

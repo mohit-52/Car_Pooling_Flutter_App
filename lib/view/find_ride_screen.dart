@@ -25,118 +25,114 @@ class _FindRideScreenState extends State<FindRideScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
         appBar: AppBar(
-          title: Text('Find a Ride'),
+          backgroundColor: Colors.red,
+          title: Text(
+            'Search Ride',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: TextFormField(
-                controller: searchFilterController,
-                decoration: InputDecoration(
-                    hintText: "Search", border: OutlineInputBorder()),
-                onChanged: (String value) {
-                  setState(() {});
-                },
-              ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white10, Colors.white10], // Add your desired colors here
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.0, 1.5],
+              tileMode: TileMode.mirror,
             ),
-            SizedBox(height: 10,),
-            StreamBuilder(
-                stream: firestore,
-                builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
-                  if(snapshot.connectionState == ConnectionState.waiting){
-                    return Shimmer.fromColors(
-                        baseColor: Colors.grey.shade700,
-                        highlightColor: Colors.grey.shade100,
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: Container(
-                                height: 50,
-                                width: 50,
-                                color: Colors.white,
-                              ),
-                              title: Container(
-                                height: 10,
-                                width: 89,
-                                color: Colors.white,
-                              ),
-                              subtitle: Container(
-                                height: 10,
-                                width: 89,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ));                }
-                  else if (snapshot.hasError){
-                    Utils().toastMessage("Some Error");
-                  }
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: TextFormField(
+                  controller: searchFilterController,
+                  decoration: InputDecoration(
+                      hintText: "Search", border: OutlineInputBorder()),
+                  onChanged: (String value) {
+                    setState(() {});
+                  },
+                ),
+              ),
+              SizedBox(height: 10,),
+              StreamBuilder(
+                  stream: firestore,
+                  builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700,
+                          highlightColor: Colors.grey.shade100,
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Container(
+                                  height: 50,
+                                  width: 50,
+                                  color: Colors.white,
+                                ),
+                                title: Container(
+                                  height: 10,
+                                  width: 89,
+                                  color: Colors.white,
+                                ),
+                                subtitle: Container(
+                                  height: 10,
+                                  width: 89,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ));                }
+                    else if (snapshot.hasError){
+                      Utils().toastMessage("Some Error");
+                    }
 
-                  return    Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index){
-                          String title = snapshot.data!.docs[index]['name'].toString();
-                          String phone = snapshot.data!.docs[index]['phone'].toString();
-                          String address = snapshot.data!.docs[index]['address'].toString();
-                          if(searchFilterController.text.isEmpty){
-                            return ListTile(
-                              title: Text(title),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    return    Expanded(
+                      flex: 1,
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index){
+                            String title = snapshot.data!.docs[index]['name'].toString();
+                            String phone = snapshot.data!.docs[index]['phone'].toString();
+                            String address = snapshot.data!.docs[index]['address'].toString();
+                            if(searchFilterController.text.isEmpty){
+                              return Column(
                                 children: [
-                                  Text("Phone: "+phone),
-                                  Text("Address: "+address),
+                                  ListTile(
+                                    title: Text(title),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Phone: "+phone),
+                                        Text("Address: "+address),
+                                      ],
+                                    ),
+                                  ),
+                                  Divider()
                                 ],
-                              ),
-                              // trailing: PopupMenuButton(
-                              //   icon: Icon(Icons.more_vert),
-                              //   itemBuilder: (context) => [
-                              //     // PopupMenuItem(
-                              //     //     value: 1,
-                              //     //     child: ListTile(
-                              //     //       onTap: () {
-                              //     //         Navigator.pop(context);
-                              //     //         showMyDialog(title, id);
-                              //     //       },
-                              //     //       leading: Icon(Icons.edit),
-                              //     //       title: Text("Edit"),
-                              //     //     )),
-                              //     PopupMenuItem(
-                              //         value: 2,
-                              //         child: ListTile(
-                              //           onTap: (){
-                              //             Navigator.pop(context);
-                              //             ref.doc(id).delete();
-                              //           },
-                              //           leading: Icon(Icons.delete),
-                              //           title: Text("Delete"),
-                              //         )),
-                              //   ],
-                              // ),
-                            );
-                          }else if(address.toLowerCase().contains(searchFilterController.text.toLowerCase())||title.toLowerCase().contains(searchFilterController.text.toLowerCase())){
-                            return ListTile(
-                              title: Text(title),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Phone: "+phone),
-                                  Text("Address: "+address),
-                                ],
-                              ),
-                            );
-                          }else {
-                            return Container();
-                          }
-                        }),
-                  );
+                              );
+                            }else if(address.toLowerCase().contains(searchFilterController.text.toLowerCase())||title.toLowerCase().contains(searchFilterController.text.toLowerCase())){
+                              return ListTile(
+                                title: Text(title),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Phone: "+phone),
+                                    Text("Address: "+address),
+                                  ],
+                                ),
+                              );
+                            }else {
+                              return Container();
+                            }
+                          }),
+                    );
 
-                }),
+                  }),
 
-          ],
+            ],
+          ),
         ),
       );
   }

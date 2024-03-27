@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../utils/utils.dart';
-import 'home_screen.dart';
+import '../view/home_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   @override
@@ -209,9 +209,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   // print(_ownVehicle.toString());
                   // String id = DateTime.now().millisecondsSinceEpoch.toString();
                   String uid = _auth.currentUser!.uid;
-                  String uID = DateTime.now().millisecond.toString();
-                  usersRef.doc(uID).set({
-                    'id' : uID,
+                  usersRef.doc(uid).set({
+                    'id' : uid,
                     'name' : _nameController.text.toString(),
                     'phone' : _phoneController.text.toString(),
                     'address' : _addressController.text.toString(),
