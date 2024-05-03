@@ -2,7 +2,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 
     <application
@@ -11,7 +12,7 @@
         android:icon="@mipmap/ic_launcher">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA36YJGENi3eV5eIq0dlFLptaregKUY4ug"/>
+            android:value="AIzaSyCL_U95rGsbWCbkKFHrDGbvlIyoiE4-LS4"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
