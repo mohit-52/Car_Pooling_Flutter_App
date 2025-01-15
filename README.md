@@ -21,26 +21,24 @@ FLOWCHART
 Technical Deep Dive
 1. User Authentication & Firestore
 User authentication is implemented via Firebase Authentication, supporting sign-up/sign-in using email-password or Google account login.
-
 On the launch screen, users can select their role (Driver or Rider) for registration or login.
 Each user’s details are stored in the users collection in Firebase Firestore, ensuring that a single user cannot register as both a driver and a rider. If this condition is violated, the system displays an error.
 
 2. Firestore & Google Maps Platform Integration
 Firestore Usage:
-
 Stores user details, driver availability, incoming ride requests, and related data.
 When a driver starts a ride, the isDriving property is set to true, making them visible to riders for ride requests.
 Ride requests are stored as objects in the requests collections for both drivers and riders, containing details like rider name, lat/lng points, and status.
 This enables real-time tracking and updates for both parties.
-Google Maps Platform:
 
+3. Google Maps Platform:
 Places API and Directions API are used to fetch and render route polylines on the Google Map Widget for both drivers and riders.
 Note: While the current design leverages Firestore's real-time event capabilities for updates, this approach may not scale efficiently. For larger-scale deployments, an event-driven architecture would be required.
 
- Driver and Rider Matching Process
+4. Driver and Rider Matching Process
 Drivers and riders are matched based on latitude and longitude coordinates of their start and end locations.
 
 Technologies Used
-Frontend: Flutter SDK
-Backend: Firebase Authentication, Firestore
-Mapping Services: Google Maps Platform APIs (Places & Directions API)
+1. Frontend: Flutter SDK
+2. Backend: Firebase Authentication, Firestore
+3. Mapping Services: Google Maps Platform APIs (Places & Directions API)
