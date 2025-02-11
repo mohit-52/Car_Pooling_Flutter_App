@@ -363,7 +363,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   borderSide: BorderSide(
                                       width: 0,
                                       style: BorderStyle.none)),
-                              prefixIcon: Icon(Icons.mail,
+                              prefixIcon: Icon(Icons.lock,
                                   color: darkTheme
                                       ? Colors.amber.shade400
                                       : Colors.grey),
@@ -427,7 +427,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   borderSide: BorderSide(
                                       width: 0,
                                       style: BorderStyle.none)),
-                              prefixIcon: Icon(Icons.mail,
+                              prefixIcon: Icon(Icons.lock,
                                   color: darkTheme
                                       ? Colors.amber.shade400
                                       : Colors.grey),
